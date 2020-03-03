@@ -7,3 +7,6 @@
 [submodule "dependencies/arduino-cmake"]
 	path = tools/arduino-cmake
 	url = git@github.com:Vijfendertig/arduino-cmake.git
+[submodule "tools/arduino-linux"]
+	path = tools/arduino-linux
+	url = git@github.com:i3drobotics/arduino-linux.git

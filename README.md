@@ -15,7 +15,7 @@ When the IMU is disabled while it is fully calibrated, the calibration offsets a
 
 - [ROS](http://www.ros.org/). I used Melodic Morenia on Ubuntu 18.04 LTS, but other versions might work too.
 - [rosserial_arduino](http://wiki.ros.org/rosserial_arduino).
-- [Arduino IDE](https://www.arduino.cc/en/Main/Software). I used version 1.8.8. Other versions might work too, but the one included in Ubuntu 18.04 LTS doesn't.
+- [Arduino SDK](https://www.arduino.cc/en/main/software). I used version 1.8.8. I downloaded the application and added it to a [git repository](https://github.com/i3drobotics/arduino-linux.git) for easy access and portability. 
 - [arduino-cmake](https://github.com/queezythegreat/arduino-cmake). I [forked the repository and added a patch](https://github.com/Vijfendertig/arduino-cmake) to use `avr-gcc` and `avr-g++` from the Arduino IDE rather than the one provided with Ubuntu 18.04 LTS.
 - [Adafruit_BNO055](https://github.com/adafruit/Adafruit_BNO055). The angular velocity is measured in deg/s, although the documentation states that it is expressed in rad/s ([issue](https://github.com/adafruit/Adafruit_BNO055/issues/50)). Because [REP 103](www.ros.org/reps/rep-0103.html) specifies to use radians and the sensor can be set up in rad/s, I [forked the repository and added a patch](https://github.com/Vijfendertig/Adafruit_BNO055) to read the angular velocity in rad/s directly rather than converting it afterwards.
 - [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor). Used by Adafruit_BNO055.
@@ -31,7 +31,7 @@ The most elegant workaround I found is to exclude the firmware from the default 
 
 So, to build the package including the firmware for the Arduino Micro, run:
 
-- `catkin_make -DARDUINO_SDK_PATH=/opt/arduino-1.8.8` (to build everything except the firmware)
+- `catkin_make -DARDUINO_SDK_PATH=PATH_TO_REPO/tools/arduino-linux` (to build everything except the firmware)
 - `. ./devel/setup.bash` (or the setup script for your favourite shell)
 - `catkin_make rosserial_adafruit_bno055_firmware_arduino_micro` (to build the firmware)
 - `catkin_make rosserial_adafruit_bno055_firmware_arduino_micro-upload` (to upload the firmware to your Arduino Micro)

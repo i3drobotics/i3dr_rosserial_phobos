@@ -17,6 +17,7 @@
 #include <ros/ros.h>
 #include <rosserial_adafruit_bno055/Imu.h>
 #include <rosserial_adafruit_bno055/CalibrationStatus.h>
+#include <visualization_msgs/Marker.h>
 
 
 namespace rosserial_adafruit_bno055 {
@@ -27,10 +28,13 @@ namespace rosserial_adafruit_bno055 {
       ros::Subscriber subscriber_compact_imu_;
       ros::Subscriber subscriber_calibration_status_;
       ros::Publisher publisher_full_imu_;
+      ros::Publisher publisher_imu_mag_;
+      ros::Publisher publisher_mag_marker_;
       std::string frame_id_;
+      std::string ns_;
       rosserial_adafruit_bno055::CalibrationStatus cached_calibration_status_;
     public:
-      ImuPublisher(const std::string & frame_id);
+      ImuPublisher(const std::string & frame_id, const std::string & ns);
       ~ImuPublisher() = default;
       void compactImuCallback(const Imu::ConstPtr & message);
       void calibrationStatusCallback(const CalibrationStatus::ConstPtr & message);

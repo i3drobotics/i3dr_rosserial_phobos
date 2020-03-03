@@ -17,9 +17,10 @@
 
 int main (int argc, char ** argv) {
   // Define namespace aliases.
-  namespace program_options = boost::program_options;
+  //namespace program_options = boost::program_options;
 
   // Get command line parameters.
+  /*
   program_options::options_description description("Recognised options");
   description.add_options()
     ("help", "display this help and exit")
@@ -28,20 +29,33 @@ int main (int argc, char ** argv) {
   program_options::variables_map variables;
   program_options::store(program_options::parse_command_line(argc, argv, description), variables);
   program_options::notify(variables);
-
-  // Display help message.
-  if (variables.count("help")) {
-    std::cout << description << std::endl;
-    return EXIT_FAILURE;
-  }
+  */
 
   // Initialise Imu publisher node.
   ros::init(argc, argv, "adafruit_bno055_imu_publisher_node");
-  ros::NodeHandle node_handle;
+  ros::NodeHandle nh;
+  ros::NodeHandle p_nh("~");
+  std::string ns = ros::this_node::getNamespace();
+
+  std::string frame_id, custom_ns;
+  std::string frame_id_ = "bno055";
+  std::string custom_ns_ = ns;
+
+  //Get parameters
+  if (p_nh.getParam("frame_id", frame_id))
+  {
+    frame_id_ = frame_id;
+  }
+  ROS_INFO("frame_id: %s", frame_id_.c_str());
+  if (p_nh.getParam("namespace", custom_ns))
+  {
+    custom_ns_ = custom_ns;
+  }
+  ROS_INFO("namespace: %s", custom_ns_.c_str());
 
   // And GO!
   {
-    rosserial_adafruit_bno055::ImuPublisher imu_publisher{variables["frame-id"].as<std::string>()};
+    rosserial_adafruit_bno055::ImuPublisher imu_publisher{frame_id_,custom_ns_};
     ros::spin();
   }
 

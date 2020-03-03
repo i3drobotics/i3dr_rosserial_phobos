@@ -96,7 +96,12 @@ namespace rosserial_adafruit_bno055 {
     auto quaternion = sensor_.getQuat();
     auto angular_velocity = sensor_.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
     auto linear_acceleration = sensor_.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
+    auto magnetometer = sensor_.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
     // Store absolute orientation (as a quaternion).
+    //TODO normalise quaternion
+    if (quaternion.x() == 0 && quaternion.y() == 0 && quaternion.z() == 0 && quaternion.w() == 0){
+      quaternion.w() = 1;
+    }
     measurements_message_.orientation.x = quaternion.x();
     measurements_message_.orientation.y = quaternion.y();
     measurements_message_.orientation.z = quaternion.z();
@@ -105,10 +110,14 @@ namespace rosserial_adafruit_bno055 {
     measurements_message_.angular_velocity.x = angular_velocity.x();
     measurements_message_.angular_velocity.y = angular_velocity.y();
     measurements_message_.angular_velocity.z = angular_velocity.z();
-    // Store linear acceleration (in m/s^2).
+    // Store ansular velocity (in rad/s);
     measurements_message_.linear_acceleration.x = linear_acceleration.x();
     measurements_message_.linear_acceleration.y = linear_acceleration.y();
     measurements_message_.linear_acceleration.z = linear_acceleration.z();
+    // Store linear acceleration (in m/s^2).
+    measurements_message_.magnetometer.x = magnetometer.x();
+    measurements_message_.magnetometer.y = magnetometer.y();
+    measurements_message_.magnetometer.z = magnetometer.z();
     // Publish message.
     measurements_publisher_.publish(&measurements_message_);
     // Augment messqge sequence id.
