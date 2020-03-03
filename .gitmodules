@@ -1,16 +1,16 @@
 [submodule "Adafruit_Sensor"]
 	path = firmware/libraries/Adafruit_Sensor
 	url = git@github.com:Vijfendertig/Adafruit_Sensor.git
-	branch = master
+	
 [submodule "Adafruit_BNO055"]
 	path = firmware/libraries/Adafruit_BNO055
 	url = git@github.com:Vijfendertig/Adafruit_BNO055.git
-	branch = master
+
 [submodule "arduino-cmake"]
 	path = tools/arduino-cmake
 	url = git@github.com:Vijfendertig/arduino-cmake.git
-	branch = master
+
 [submodule "arduino-linux"]
 	path = tools/arduino-linux
 	url = git@github.com:i3drobotics/arduino-linux.git
-	branch = master
+
