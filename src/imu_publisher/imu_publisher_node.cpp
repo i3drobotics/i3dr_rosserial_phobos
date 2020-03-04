@@ -38,8 +38,11 @@ int main (int argc, char ** argv) {
   std::string ns = ros::this_node::getNamespace();
 
   std::string frame_id, custom_ns;
+  bool publish_tf;
+
   std::string frame_id_ = "bno055";
   std::string custom_ns_ = ns;
+  bool publish_tf_;
 
   //Get parameters
   if (p_nh.getParam("frame_id", frame_id))
@@ -52,10 +55,15 @@ int main (int argc, char ** argv) {
     custom_ns_ = custom_ns;
   }
   ROS_INFO("namespace: %s", custom_ns_.c_str());
+  if (p_nh.getParam("publish_tf", publish_tf))
+  {
+    publish_tf_ = publish_tf;
+  }
+  ROS_INFO("publish_tf: %s", publish_tf_ ? "true" : "false");
 
   // And GO!
   {
-    rosserial_adafruit_bno055::ImuPublisher imu_publisher{frame_id_,custom_ns_};
+    rosserial_adafruit_bno055::ImuPublisher imu_publisher{frame_id_,custom_ns_,publish_tf_};
     ros::spin();
   }
 

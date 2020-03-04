@@ -18,7 +18,9 @@
 #include <rosserial_adafruit_bno055/Imu.h>
 #include <rosserial_adafruit_bno055/CalibrationStatus.h>
 #include <visualization_msgs/Marker.h>
-
+#include "tf2_ros/transform_broadcaster.h"
+#include <sensor_msgs/Imu.h>
+#include <sensor_msgs/MagneticField.h>
 
 namespace rosserial_adafruit_bno055 {
 
@@ -32,12 +34,14 @@ namespace rosserial_adafruit_bno055 {
       ros::Publisher publisher_mag_marker_;
       std::string frame_id_;
       std::string ns_;
+      bool publish_tf_;
       rosserial_adafruit_bno055::CalibrationStatus cached_calibration_status_;
     public:
-      ImuPublisher(const std::string & frame_id, const std::string & ns);
+      ImuPublisher(const std::string & frame_id, const std::string & ns, bool publish_tf_);
       ~ImuPublisher() = default;
       void compactImuCallback(const Imu::ConstPtr & message);
       void calibrationStatusCallback(const CalibrationStatus::ConstPtr & message);
+      void publishTransform(const Imu::ConstPtr & message);
   };
 
 }

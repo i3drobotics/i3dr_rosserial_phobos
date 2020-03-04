@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   rosserial_arduino
   rosserial_client
+  tf2_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -110,7 +111,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES compact_msgs
-  CATKIN_DEPENDS message_runtime geometry_msgs std_msgs rosserial_arduino rosserial_client
+  CATKIN_DEPENDS message_runtime geometry_msgs std_msgs rosserial_arduino rosserial_client tf2_ros
 #  DEPENDS system_lib
 )
 

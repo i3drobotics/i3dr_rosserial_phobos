@@ -21,6 +21,7 @@
   <depend>sensor_msgs</depend>
   <depend>rosserial_arduino</depend>
   <depend>rosserial_client</depend>
+  <depend>tf2_ros</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

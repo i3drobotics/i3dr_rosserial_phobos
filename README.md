@@ -53,6 +53,32 @@ The calibration status of the system, accelerometer, gyroscope and magnetometer 
 
 To visualize the orientation vector, you can use rqt's pose view plugin. Just open the plugin (`Plugins`, `Visualization`, `Pose View`) and the topic monitor (`Plugins`, `Topics`, `Topic Monitor`) and drag the `/bno055/imu` topic (if you are running the republisher node too, you can also use the `/imu` topic) from the topic monitor to the pose view.
 
+## Calibration
+Calibration of this sensor is performed automatically. When a sucessfull calibration is acheived this is saved to EEPROM on the arduino for re-loading after power-off. 
+Calibrate status can be monitored by viewing the topic /bno055/calib_status
+
+A method for movements needed to get a sucessfull calibration is detailed below:
+- Power-off.
+- Place sensor motionless on table, any orientation.
+- Power-on.
+- Wait for 0 3 0 0 or 0 3 1 0 (gyro calibrated).
+- Wait 3 seconds.
+- Gently pick up sensor.
+- Rotate it smoothly (taking about 2 seconds) to some wild 3D orientation, hold steady for 2 seconds.
+- Rotate it smoothly (taking about 2 seconds) to a different wild 3D orientation, hold steady for 2 seconds.
+- Rotate it smoothly (taking about 2 seconds) to a different wild 3D orientation, hold steady for 2 seconds.
+- Rotate it smoothly (taking about 2 seconds) to a different wild 3D orientation, hold steady for 2 seconds.
+- Rotate it smoothly (taking about 2 seconds) to a different wild 3D orientation, hold steady for 2 seconds.
+- Rotate it smoothly (taking about 2 seconds) to a different wild 3D orientation, hold steady for 2 seconds.
+- If status doesn't read 3 3 1 3, go to previous step. If lucky you won't have to.
+- Rotate it smoothly (taking about 2 seconds) to horizontal, place gently on table, let go, wait 2 seconds.
+- 3 3 3 3 - Yay! Maybe.
+
+Hints:
+Perform rotations by hand as smoothly as possible. No bouncing or shaking or rapid twirl.
+All those wild 3D orientations need to be unique. Don't repeat any orientation.
+It may read 3 3 1 3 before completing all six rotations, but ignore it and do all six.
+
 ## License
 
 MIT license, see LICENSE.md for details.

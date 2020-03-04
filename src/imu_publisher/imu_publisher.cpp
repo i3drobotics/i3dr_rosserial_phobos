@@ -11,14 +11,13 @@
 
 
 #include "imu_publisher.hpp"
-#include <sensor_msgs/Imu.h>
-#include <sensor_msgs/MagneticField.h>
 
 namespace rosserial_adafruit_bno055 {
 
-  ImuPublisher::ImuPublisher(const std::string & frame_id, const std::string & ns):
+  ImuPublisher::ImuPublisher(const std::string & frame_id, const std::string & ns, bool publish_tf):
     frame_id_{frame_id},
     ns_{ns},
+    publish_tf_{publish_tf},
     subscriber_compact_imu_{node_handle_.subscribe("/bno055/imu", 16, &ImuPublisher::compactImuCallback, this)},
     subscriber_calibration_status_{node_handle_.subscribe("/bno055/calib_status", 16, 
                                                           &ImuPublisher::calibrationStatusCallback, this)},
@@ -42,11 +41,6 @@ namespace rosserial_adafruit_bno055 {
     full_message.orientation = compact_message->orientation;
     full_message.angular_velocity = compact_message->angular_velocity;
     full_message.linear_acceleration = compact_message->linear_acceleration;
-
-    //TODO normalise quaternion
-    if (full_message.orientation.x == 0 && full_message.orientation.y == 0 && full_message.orientation.z == 0 && full_message.orientation.w == 0){
-      full_message.orientation.w = 1;
-    }
 
     sensor_msgs::MagneticField mag_msg;
     mag_msg.header.seq = compact_message->header.seq;
@@ -73,8 +67,23 @@ namespace rosserial_adafruit_bno055 {
     }
     publisher_full_imu_.publish(full_message);
     publisher_imu_mag_.publish(mag_msg);
+    if (publish_tf_)
+      publishTransform(compact_message);
   }
 
+  void ImuPublisher::publishTransform(const Imu::ConstPtr & compact_message)
+  {
+    static tf2_ros::TransformBroadcaster tf_broadcaster_;
+    geometry_msgs::TransformStamped transform;
+    transform.header.stamp = compact_message->header.stamp;
+    transform.header.frame_id = "odom";
+    transform.child_frame_id = frame_id_;
+    transform.transform.rotation.w = compact_message->orientation.w;
+    transform.transform.rotation.x = compact_message->orientation.x;
+    transform.transform.rotation.y = compact_message->orientation.y;
+    transform.transform.rotation.z = compact_message->orientation.z;
+    tf_broadcaster_.sendTransform(transform);
+  }
 
   void ImuPublisher::calibrationStatusCallback(const CalibrationStatus::ConstPtr & message) {
     cached_calibration_status_ = *message;
