@@ -32,6 +32,9 @@ namespace rosserial_adafruit_bno055 {
       node_handle_->advertise(measurements_publisher_);
       node_handle_->advertise(calibration_status_publisher_);
       node_handle_->subscribe(enable_subscriber_);
+
+      delay(1000);
+      sensor_.setExtCrystalUse(true);
     }
     else {
       while(true) {
@@ -98,10 +101,6 @@ namespace rosserial_adafruit_bno055 {
     auto linear_acceleration = sensor_.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL);
     auto magnetometer = sensor_.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
     // Store absolute orientation (as a quaternion).
-    //TODO normalise quaternion
-    if (quaternion.x() == 0 && quaternion.y() == 0 && quaternion.z() == 0 && quaternion.w() == 0){
-      quaternion.w() = 1;
-    }
     measurements_message_.orientation.x = quaternion.x();
     measurements_message_.orientation.y = quaternion.y();
     measurements_message_.orientation.z = quaternion.z();
