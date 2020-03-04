@@ -31,7 +31,6 @@ namespace rosserial_adafruit_bno055 {
       ros::Subscriber subscriber_calibration_status_;
       ros::Publisher publisher_full_imu_;
       ros::Publisher publisher_imu_mag_;
-      ros::Publisher publisher_mag_marker_;
       std::string frame_id_;
       std::string ns_;
       bool publish_tf_;

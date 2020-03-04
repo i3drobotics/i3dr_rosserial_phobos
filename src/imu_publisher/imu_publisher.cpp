@@ -21,9 +21,8 @@ namespace rosserial_adafruit_bno055 {
     subscriber_compact_imu_{node_handle_.subscribe("/bno055/imu", 16, &ImuPublisher::compactImuCallback, this)},
     subscriber_calibration_status_{node_handle_.subscribe("/bno055/calib_status", 16, 
                                                           &ImuPublisher::calibrationStatusCallback, this)},
-    publisher_full_imu_{node_handle_.advertise<sensor_msgs::Imu>(ns+"/imu/data_raw", 16)},
-    publisher_imu_mag_{node_handle_.advertise<sensor_msgs::MagneticField>(ns+"/imu/mag", 16)},
-    publisher_mag_marker_{node_handle_.advertise<sensor_msgs::MagneticField>(ns+"/imu/mag", 16)}
+    publisher_full_imu_{node_handle_.advertise<sensor_msgs::Imu>(ns+"/imu/data", 16)},
+    publisher_imu_mag_{node_handle_.advertise<sensor_msgs::MagneticField>(ns+"/imu/mag", 16)}
   {
     // Reset cached calibration status.
     cached_calibration_status_.system = 0;
