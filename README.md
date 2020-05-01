@@ -11,11 +11,17 @@ Both publishers can be enabled or disabled by sending a `true` or `false` bool m
 
 When the IMU is disabled while it is fully calibrated, the calibration offsets are stored in the Arduino's EEPROM memory. If stored offsets are available, they are restored after a reset.
 
-Camera triggers on digital pins 2 and 3 will be triggered at a rate of 10Hz. Change this by adjusting the last agument of the class initalisation in the file 'arduino_micro_imu_node.cpp' line 12:
+Camera triggers on digital pin 12 will be triggered at a rate of 10Hz. Change this by adjusting the last agument of the class initalisation in the file 'arduino_micro_imu_node.cpp' line 12:
 ```
-rosserial_adafruit_bno055::RosAdafruitBNO055 ros_sensor(&node_handle, 20UL, 1000UL, 100UL);
+i3dr_rosserial_phobos::RosserialPhobos ros_phobos(&node_handle, 20UL, 1000UL, 100UL);
 ```
 *Note: this value should 1000/fps*
+
+To change this pin number used on the arduino edit 'rosserial_phobos.hpp' lines 40-41:
+```
+int CAMERA_TRIGGER_PIN_1 = 12;
+int CAMERA_TRIGGER_PIN_2 = 12;
+```
 
 ## Dependencies
 
@@ -53,13 +59,14 @@ sudo cp udev/72-micro-devel.rules /etc/udev/rules.d/
 
 Just source the workspace's setup script and run `rosrun rosserial_python serial_node.py /dev/ttyACM0`. Start the `/bno055/imu` and `/bno055/calib_status` publishers by sending a `std_msgs/Bool` `true` message to the `/bno055/enable` subscriber. The `imu_publisher_node` subscribes to the compact rosserial_adafruit_bno055/Imu messages and publishes full sensor_msgs/Imu messages (including covariances).
 
-There is also a `rosserial_adafruit_bno055.launch` file that launches both the rosserial node and a republisher node and sends an enable command to the IMU node. The launch file accepts two parameters: `bno055_port` which specifies the IMU node's device and `bno055_frame_id` which specifies the frame_id used in the full sensor_msgs/Imu message.
+There is also a `i3dr_rosserial_phobos.launch` file that launches both the rosserial node and a republisher node and sends an enable command to the IMU node. The launch file accepts two parameters: `bno055_port` which specifies the IMU node's device and `bno055_frame_id` which specifies the frame_id used in the full sensor_msgs/Imu message.
 
 The calibration status of the system, accelerometer, gyroscope and magnetometer is given with integers from 0 to 3, where 0 means uncalibrated and 3 means fully calibrated.
 
 To visualize the orientation vector, you can use rqt's pose view plugin. Just open the plugin (`Plugins`, `Visualization`, `Pose View`) and the topic monitor (`Plugins`, `Topics`, `Topic Monitor`) and drag the `/bno055/imu` topic (if you are running the republisher node too, you can also use the `/imu` topic) from the topic monitor to the pose view.
 
 ## Calibration
+
 Calibration of this sensor is performed automatically. When a sucessfull calibration is acheived this is saved to EEPROM on the arduino for re-loading after power-off. 
 Calibrate status can be monitored by viewing the topic /bno055/calib_status
 

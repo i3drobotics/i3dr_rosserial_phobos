@@ -37,8 +37,8 @@ namespace i3dr_rosserial_phobos {
       static constexpr uint16_t calibration_slots_address_ = 0U;
       static constexpr uint8_t calibration_slots_count_ = 8U;
       static constexpr uint8_t calibration_signature_ = 55U;
-      int CAMERA_TRIGGER_PIN_1 = 2;
-      int CAMERA_TRIGGER_PIN_2 = 3;
+      int CAMERA_TRIGGER_PIN_1 = 12;
+      int CAMERA_TRIGGER_PIN_2 = 12; //change this if the pin numbers used change
       int8_t current_calibration_slot_;
     public:  // Member functions.
       RosserialPhobos(ros::NodeHandle * node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval, unsigned long int trigger_interval);
