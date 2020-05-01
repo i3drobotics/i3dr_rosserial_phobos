@@ -4,20 +4,20 @@
 
 #include "arduino_micro_ros.h"
 #include <std_msgs/Bool.h>
-#include <rosserial_adafruit_bno055/Imu.h>
-#include <rosserial_adafruit_bno055/CalibrationStatus.h>
+#include <i3dr_rosserial_phobos/Imu.h>
+#include <i3dr_rosserial_phobos/CalibrationStatus.h>
 #include <Adafruit_BNO055.h>
 
 
-namespace rosserial_adafruit_bno055 {
+namespace i3dr_rosserial_phobos {
 
-  class RosAdafruitBNO055 {
+  class RosserialPhobos {
     private:  // Data types and member variables.
       ros::NodeHandle * node_handle_;
       Adafruit_BNO055 sensor_;
       Imu measurements_message_;
       CalibrationStatus calibration_status_message_;
-      ros::Subscriber<std_msgs::Bool, RosAdafruitBNO055> enable_subscriber_;
+      ros::Subscriber<std_msgs::Bool, RosserialPhobos> enable_subscriber_;
       ros::Publisher measurements_publisher_;
       ros::Publisher calibration_status_publisher_;
       bool enable_;
@@ -41,8 +41,8 @@ namespace rosserial_adafruit_bno055 {
       int CAMERA_TRIGGER_PIN_2 = 3;
       int8_t current_calibration_slot_;
     public:  // Member functions.
-      RosAdafruitBNO055(ros::NodeHandle * node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval, unsigned long int trigger_interval);
-      ~RosAdafruitBNO055() = default;
+      RosserialPhobos(ros::NodeHandle * node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval, unsigned long int trigger_interval);
+      ~RosserialPhobos() = default;
       void setup();
       void enable();
       void disable();

@@ -11,6 +11,12 @@ Both publishers can be enabled or disabled by sending a `true` or `false` bool m
 
 When the IMU is disabled while it is fully calibrated, the calibration offsets are stored in the Arduino's EEPROM memory. If stored offsets are available, they are restored after a reset.
 
+Camera triggers on digital pins 2 and 3 will be triggered at a rate of 10Hz. Change this by adjusting the last agument of the class initalisation in the file 'arduino_micro_imu_node.cpp' line 12:
+```
+rosserial_adafruit_bno055::RosAdafruitBNO055 ros_sensor(&node_handle, 20UL, 1000UL, 100UL);
+```
+*Note: this value should 1000/fps*
+
 ## Dependencies
 
 - [ROS](http://www.ros.org/). I used Melodic Morenia on Ubuntu 18.04 LTS, but other versions might work too.
@@ -33,8 +39,8 @@ So, to build the package including the firmware for the Arduino Micro, run:
 
 - `catkin_make -DARDUINO_SDK_PATH=PATH_TO_REPO/tools/arduino-linux` (to build everything except the firmware)
 - `. ./devel/setup.bash` (or the setup script for your favourite shell)
-- `catkin_make rosserial_adafruit_bno055_firmware_arduino_micro` (to build the firmware)
-- `catkin_make rosserial_adafruit_bno055_firmware_arduino_micro-upload` (to upload the firmware to your Arduino Micro)
+- `catkin_make i3dr_rosserial_phobos_firmware_arduino_micro` (to build the firmware)
+- `catkin_make i3dr_rosserial_phobos_firmware_arduino_micro-upload` (to upload the firmware to your Arduino Micro)
 
 ## Running
 

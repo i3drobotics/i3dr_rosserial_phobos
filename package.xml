@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package format="2">
 
-  <name>rosserial_adafruit_bno055</name>
+  <name>i3dr_rosserial_phobos</name>
   <version>0.0.0</version>
-  <description>Rosserial Adafruit BNO055 IMU node</description>
+  <description>ROS package for programming and communicating with Arduino in i3dr Phobos stereo camera system</description>
 
   <license>MIT</license>
 
-  <maintainer email="maarten@vijfendertig.be">Maarten De Munck</maintainer>
-  <author email="maarten@vijfendertig.be">Maarten De Munck</author>
+  <maintainer email="bknight@i3drobotics.com">Ben Knight</maintainer>
+  <author email="bknight@i3drobotics.com">Ben Knight</author>
 
-  <url type="repository">https://github.com/Vijfendertig/rosserial_adafruit_bno055</url>
+  <url type="repository">https://github.com/i3drobotics/i3dr_rosserial_phobos-ros</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>message_generation</build_depend>

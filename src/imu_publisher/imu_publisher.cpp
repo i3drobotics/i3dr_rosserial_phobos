@@ -12,7 +12,7 @@
 
 #include "imu_publisher.hpp"
 
-namespace rosserial_adafruit_bno055 {
+namespace i3dr_rosserial_phobos {
 
   ImuPublisher::ImuPublisher(const std::string & frame_id, const std::string & ns, bool publish_tf):
     frame_id_{frame_id},

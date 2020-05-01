@@ -15,14 +15,14 @@
 
 
 #include <ros/ros.h>
-#include <rosserial_adafruit_bno055/Imu.h>
-#include <rosserial_adafruit_bno055/CalibrationStatus.h>
+#include <i3dr_rosserial_phobos/Imu.h>
+#include <i3dr_rosserial_phobos/CalibrationStatus.h>
 #include <visualization_msgs/Marker.h>
 #include "tf2_ros/transform_broadcaster.h"
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/MagneticField.h>
 
-namespace rosserial_adafruit_bno055 {
+namespace i3dr_rosserial_phobos {
 
   class ImuPublisher {
     private:
@@ -34,7 +34,7 @@ namespace rosserial_adafruit_bno055 {
       std::string frame_id_;
       std::string ns_;
       bool publish_tf_;
-      rosserial_adafruit_bno055::CalibrationStatus cached_calibration_status_;
+      i3dr_rosserial_phobos::CalibrationStatus cached_calibration_status_;
     public:
       ImuPublisher(const std::string & frame_id, const std::string & ns, bool publish_tf_);
       ~ImuPublisher() = default;

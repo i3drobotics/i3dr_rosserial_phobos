@@ -5,7 +5,7 @@
       <arg name="namespace" default="imu_dev"/>
       <arg name="publish_tf" default="true"/>
 
-      <node pkg="rosserial_adafruit_bno055" type="imu_publisher_node" name="imu_publisher_node"
+      <node pkg="i3dr_rosserial_phobos" type="imu_publisher_node" name="imu_publisher_node"
             respawn="true" respawn_delay="4" required="false" output="screen">
             <param name="frame_id" value="$(arg frame_id)"/>
             <param name="namespace" value="$(arg namespace)"/>

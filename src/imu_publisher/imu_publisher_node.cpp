@@ -63,7 +63,7 @@ int main (int argc, char ** argv) {
 
   // And GO!
   {
-    rosserial_adafruit_bno055::ImuPublisher imu_publisher{frame_id_,custom_ns_,publish_tf_};
+    i3dr_rosserial_phobos::ImuPublisher imu_publisher{frame_id_,custom_ns_,publish_tf_};
     ros::spin();
   }
 
