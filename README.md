@@ -1,6 +1,6 @@
-# Rosserial IMU node (Arduino Micro with Adafruit BNO055)
+# Rosserial Phobos control node (Arduino Micro with Adafruit BNO055)
 
-This package builds a rosserial compatible USB IMU from an Arduino Micro and an Adafruit BNO055 IMU. The Arduino and the BNO055 breakout board communicate via I2C, so you'll have to connect the 5V, GND, SDA and SCL of the breakout board to your Arduino Micro (D2 = SDA, D3 = SCL).
+This package builds a rosserial compatible USB IMU from an Arduino Micro and an Adafruit BNO055 IMU. The Arduino and the BNO055 breakout board communicate via I2C, so you'll have to connect the 5V, GND, SDA and SCL of the breakout board to your Arduino Micro (D2 = SDA, D3 = SCL). Adapted from Rosserial IMU node from [Vijfendertig](https://github.com/Vijfendertig/rosserial_adafruit_bno055)
 
 The rosserial node provides two publishers:
 
