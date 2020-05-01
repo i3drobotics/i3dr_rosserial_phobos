@@ -25,6 +25,8 @@ namespace rosserial_adafruit_bno055 {
       unsigned long int measurements_last_published_;
       unsigned long int calibration_status_publish_interval_;
       unsigned long int calibration_status_last_published_;
+      unsigned long int trigger_interval_;
+      unsigned long int trigger_last_;
       struct StoredCalibrationData {
         // Add a valid field before and after the calibration data to detect interrupted writes.
         uint8_t signature_front;
@@ -35,9 +37,11 @@ namespace rosserial_adafruit_bno055 {
       static constexpr uint16_t calibration_slots_address_ = 0U;
       static constexpr uint8_t calibration_slots_count_ = 8U;
       static constexpr uint8_t calibration_signature_ = 55U;
+      int CAMERA_TRIGGER_PIN_1 = 2;
+      int CAMERA_TRIGGER_PIN_2 = 3;
       int8_t current_calibration_slot_;
     public:  // Member functions.
-      RosAdafruitBNO055(ros::NodeHandle * node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval);
+      RosAdafruitBNO055(ros::NodeHandle * node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval, unsigned long int trigger_interval);
       ~RosAdafruitBNO055() = default;
       void setup();
       void enable();
@@ -50,6 +54,8 @@ namespace rosserial_adafruit_bno055 {
       void resetStoredCalibrationData(StoredCalibrationData & data);
       void loadCalibrationFromEeprom();
       void saveCalibrationToEeprom();
+      void initCameraTrigger();
+      void triggerCamera();
   };
   
 }

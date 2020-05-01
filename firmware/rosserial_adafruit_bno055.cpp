@@ -6,7 +6,7 @@
 
 namespace rosserial_adafruit_bno055 {
 
-  RosAdafruitBNO055::RosAdafruitBNO055(ros::NodeHandle * node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval):
+  RosAdafruitBNO055::RosAdafruitBNO055(ros::NodeHandle * node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval, unsigned long int trigger_interval):
     node_handle_{node_handle},
     sensor_{},
     enable_subscriber_{"/bno055/enable", &RosAdafruitBNO055::enableCallback, this},
@@ -15,14 +15,17 @@ namespace rosserial_adafruit_bno055 {
     enable_{false},
     measurements_publish_interval_{measurements_publish_interval},
     calibration_status_publish_interval_{calibration_status_publish_interval},
+    trigger_interval_{trigger_interval},
     measurements_last_published_{0UL},
     calibration_status_last_published_{0UL},
+    trigger_last_{0UL},
     current_calibration_slot_{calibration_slots_count_ - 1}
   {
     measurements_message_.header.frame_id = "bno055";
     measurements_message_.header.seq = 0;
     calibration_status_message_.last_saved = ros::Time();
     pinMode(LED_BUILTIN, OUTPUT);
+    initCameraTrigger();
   }
 
 
@@ -38,9 +41,9 @@ namespace rosserial_adafruit_bno055 {
     }
     else {
       while(true) {
-        digitalWrite(LED_BUILTIN, HIGH);
+        //digitalWrite(LED_BUILTIN, HIGH);
         delay(1000);
-        digitalWrite(LED_BUILTIN, LOW);
+        //digitalWrite(LED_BUILTIN, LOW);
         delay(1000);
       }
     }
@@ -73,12 +76,32 @@ namespace rosserial_adafruit_bno055 {
       }
       if(current >= calibration_status_last_published_ + calibration_status_publish_interval_
           || current < calibration_status_last_published_) {
-        digitalWrite(LED_BUILTIN, HIGH);
+        //digitalWrite(LED_BUILTIN, HIGH);
         getAndPublishCalibrationStatus();
-        digitalWrite(LED_BUILTIN, LOW);
+        //digitalWrite(LED_BUILTIN, LOW);
         calibration_status_last_published_ += calibration_status_publish_interval_;    
       }
+      if (current >= trigger_last_ + trigger_interval_){
+        trigger_last_ = current;
+        triggerCamera();
+      }
     }
+  }
+
+  void RosAdafruitBNO055::initCameraTrigger(){
+    pinMode(CAMERA_TRIGGER_PIN_1, OUTPUT);
+    pinMode(CAMERA_TRIGGER_PIN_2, OUTPUT);
+  }
+
+  void RosAdafruitBNO055::triggerCamera(){
+    int trigger_time = 10;
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(CAMERA_TRIGGER_PIN_1, HIGH);
+    digitalWrite(CAMERA_TRIGGER_PIN_2, HIGH);
+    delay(trigger_time);
+    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(CAMERA_TRIGGER_PIN_1, LOW);
+    digitalWrite(CAMERA_TRIGGER_PIN_2, LOW);
   }
 
 

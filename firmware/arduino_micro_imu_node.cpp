@@ -9,7 +9,7 @@
 
 
 ros::NodeHandle node_handle;
-rosserial_adafruit_bno055::RosAdafruitBNO055 ros_sensor(&node_handle, 20UL, 1000UL);
+rosserial_adafruit_bno055::RosAdafruitBNO055 ros_sensor(&node_handle, 20UL, 1000UL, 100UL);
 
 
 void setup()
