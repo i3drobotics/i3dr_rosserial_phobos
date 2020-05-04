@@ -132,7 +132,7 @@ void RosserialPhobos::enableCallback(const std_msgs::Bool &message)
 void RosserialPhobos::framerateCallback(const std_msgs::Float32 &message)
 {
   float val = message.data;
-  trigger_interval_ = val * 1000;
+  trigger_interval_ = (1/val) * 1000;
 }
 
 void RosserialPhobos::getAndPublishMeasurements()

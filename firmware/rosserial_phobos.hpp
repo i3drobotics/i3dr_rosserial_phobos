@@ -4,6 +4,7 @@
 
 #include "arduino_micro_ros.h"
 #include <std_msgs/Bool.h>
+#include <std_msgs/Float32.h>
 #include <i3dr_rosserial_phobos/Imu.h>
 #include <i3dr_rosserial_phobos/CalibrationStatus.h>
 #include <Adafruit_BNO055.h>
@@ -18,7 +19,7 @@ namespace i3dr_rosserial_phobos {
       Imu measurements_message_;
       CalibrationStatus calibration_status_message_;
       ros::Subscriber<std_msgs::Bool, RosserialPhobos> enable_subscriber_;
-      ros::Subscriber<std_msgs::Bool, RosserialPhobos> framerate_subscriber_;
+      ros::Subscriber<std_msgs::Float32, RosserialPhobos> framerate_subscriber_;
       ros::Publisher measurements_publisher_;
       ros::Publisher calibration_status_publisher_;
       bool enable_;
@@ -50,7 +51,7 @@ namespace i3dr_rosserial_phobos {
       void spinOnce();
     private:  // Member functions.
       void enableCallback(const std_msgs::Bool & message);
-      void framerateCallback(const std_msgs::Float & message);
+      void framerateCallback(const std_msgs::Float32 & message);
       void getAndPublishMeasurements();
       void getAndPublishCalibrationStatus();
       void resetStoredCalibrationData(StoredCalibrationData & data);
