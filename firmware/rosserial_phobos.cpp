@@ -6,19 +6,22 @@
 namespace i3dr_rosserial_phobos
 {
 
-RosserialPhobos::RosserialPhobos(ros::NodeHandle *node_handle, unsigned long int measurements_publish_interval, unsigned long int calibration_status_publish_interval, unsigned long int trigger_interval) : node_handle_{node_handle},
-                                                                                                                                                                                                             sensor_{},
-                                                                                                                                                                                                             enable_subscriber_{"/bno055/enable", &RosserialPhobos::enableCallback, this},
-                                                                                                                                                                                                             measurements_publisher_{"bno055/imu", &measurements_message_},
-                                                                                                                                                                                                             calibration_status_publisher_{"bno055/calib_status", &calibration_status_message_},
-                                                                                                                                                                                                             enable_{false},
-                                                                                                                                                                                                             measurements_publish_interval_{measurements_publish_interval},
-                                                                                                                                                                                                             calibration_status_publish_interval_{calibration_status_publish_interval},
-                                                                                                                                                                                                             trigger_interval_{trigger_interval},
-                                                                                                                                                                                                             measurements_last_published_{0UL},
-                                                                                                                                                                                                             calibration_status_last_published_{0UL},
-                                                                                                                                                                                                             trigger_last_{0UL},
-                                                                                                                                                                                                             current_calibration_slot_{calibration_slots_count_ - 1}
+RosserialPhobos::RosserialPhobos(ros::NodeHandle *node_handle, unsigned long int measurements_publish_interval, 
+                                  unsigned long int calibration_status_publish_interval, unsigned long int trigger_interval) : 
+                                    node_handle_{node_handle},
+                                    sensor_{},
+                                    enable_subscriber_{"/bno055/enable", &RosserialPhobos::enableCallback, this},
+                                    framerate_subscriber_{"/bn055/framerate", &RosserialPhobos::framerateCallback, this},
+                                    measurements_publisher_{"bno055/imu", &measurements_message_},
+                                    calibration_status_publisher_{"bno055/calib_status", &calibration_status_message_},
+                                    enable_{false},
+                                    measurements_publish_interval_{measurements_publish_interval},
+                                    calibration_status_publish_interval_{calibration_status_publish_interval},
+                                    trigger_interval_{trigger_interval},
+                                    measurements_last_published_{0UL},
+                                    calibration_status_last_published_{0UL},
+                                    trigger_last_{0UL},
+                                    current_calibration_slot_{calibration_slots_count_ - 1}
 {
   measurements_message_.header.frame_id = "bno055";
   measurements_message_.header.seq = 0;
@@ -35,6 +38,7 @@ void RosserialPhobos::setup()
     node_handle_->advertise(measurements_publisher_);
     node_handle_->advertise(calibration_status_publisher_);
     node_handle_->subscribe(enable_subscriber_);
+    node_handle_->subscribe(framerate_subscriber_);
 
     delay(1000);
     sensor_.setExtCrystalUse(true);
@@ -123,6 +127,12 @@ void RosserialPhobos::enableCallback(const std_msgs::Bool &message)
   {
     disable();
   }
+}
+
+void RosserialPhobos::framerateCallback(const std_msgs::Float32 &message)
+{
+  float val = message.data;
+  trigger_interval_ = val * 1000;
 }
 
 void RosserialPhobos::getAndPublishMeasurements()
