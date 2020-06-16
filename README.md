@@ -44,9 +44,17 @@ The most elegant workaround I found is to exclude the firmware from the default 
 So, to build the package including the firmware for the Arduino Micro, run:
 
 - `catkin_make -DARDUINO_SDK_PATH=PATH_TO_REPO/tools/arduino-linux` (to build everything except the firmware)
-- `. ./devel/setup.bash` (or the setup script for your favourite shell)
+- `source devel/setup.bash` (source the workspace)
 - `catkin_make i3dr_rosserial_phobos_firmware_arduino_micro` (to build the firmware)
 - `catkin_make i3dr_rosserial_phobos_firmware_arduino_micro-upload` (to upload the firmware to your Arduino Micro)
+
+Alternatively use catkin build
+- `catkin init` (to setup to catkin workspace)
+- `catkin config -DARDUINO_SDK_PATH=PATH_TO_REPO/tools/arduino-linux` (to configure the workspace)
+- `catkin build` (to build the workspace)
+- `source devel/setup.bash` (source the workspace)
+- `catkin build --no-deps i3dr_rosserial_phobos --make-args i3dr_rosserial_phobos_firmware_arduino_micro` (to build the firmware)
+- `catkin build --no-deps i3dr_rosserial_phobos --make-args i3dr_rosserial_phobos_firmware_arduino_micro-upload` (to upload the firmware to your Arduino Micro)
 
 ## Running
 
